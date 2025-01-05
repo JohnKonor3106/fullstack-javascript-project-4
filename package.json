@@ -4,7 +4,7 @@
   "description": "[![Actions Status](https://github.com/JohnKonor3106/fullstack-javascript-project-4/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/JohnKonor3106/fullstack-javascript-project-4/actions)",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest ",
+    "test": "npx jest --runInBand --no-cache",
     "coverage": "npx jest --coverage"
   },
   "type": "module",
@@ -16,10 +16,12 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.16.0",
     "jest": "^29.7.0",
-    "nock": "^13.5.6"
+    "nock": "^13.5.6",
+    "prettier": "3.4.2"
   },
   "dependencies": {
     "axios": "^1.7.8",
+    "cheerio": "^1.0.0",
     "commander": "^12.1.0"
   },
   "config": {

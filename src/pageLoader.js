@@ -1,26 +1,31 @@
-import axios from "axios";
-import path  from 'path';
-import fs from 'fs/promises';
-import os from 'os';
-import { getName } from "./index.js";
+import os from "os";
+import { loadHtmlPage } from "./index.js";
+import { loadImage } from "./index.js";
 
-const pageLoader = (link, dir = os.tmpdir()) => {
-  const filename = getName(link);
-  const pathFile = path.join(dir, filename);
-
-  return axios.get(link)
-    .then((response) => {
-      const content = typeof response.data === 'string' ? response.data : JSON.stringify(response.data)
-       return fs.writeFile(pathFile, content, 'utf-8')
-        .then(() => {
-            return pathFile
+const pageLoader = (url, dir = os.tmpdir()) => {
+  return loadHtmlPage(url, dir)
+    .then((htmlPath) => {
+      console.log(`HTML saved to: ${htmlPath}`);
+      return htmlPath;
+    })
+    .then((htmlPath) => {
+      const promises = loadImage(htmlPath, url, dir);
+      return promises
+      .then((images) => {
+        images.forEach((link) => {
+          return link
+          .then((url) => {
+            console.log(url)
+          })
         })
+        return `Images uploaded: ${images.length}`;
+      });
     })
-    .catch((e) => {
-      console.error(e)
-    })
-}
+    .catch((error) => {
+      console.error(`Error loading page: ${error.message}`);
+      throw error;
+    });
+};
 
 export default pageLoader;
-
 
